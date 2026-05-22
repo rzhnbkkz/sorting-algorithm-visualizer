@@ -26,6 +26,7 @@ button:hover {
 }
 
 #array-container {
+    margin-bottom: 30px;
     display: flex;
     align-items: flex-end;
     height: 400px;
@@ -35,4 +36,63 @@ button:hover {
 .bar {
     width: 20px;
     background-color: steelblue;
+}
+
+select {
+    padding: 8px 16px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #fdfce8;
+    color: rgb(0, 0, 0);
+    border: 1px solid #af4c4c;
+    border-radius: 7px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#custom-array-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+}
+
+#custom-array-wrapper > #custom-button {
+    margin: 0;
+}
+
+#custom-array-input {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 4px;
+    padding: 8px;
+    background-color: #fdfce8;
+    border: 1px solid #af4c4c;
+    border-radius: 7px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+#custom-array-input.visible {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+#custom-array-input input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #af4c4c;
+    border-radius: 7px;
+    background-color: #fff;
+    color: #000;
+    width: 200px;
+    box-sizing: border-box;
+}
+
+#apply-custom-button {
+    margin: 0;
 }

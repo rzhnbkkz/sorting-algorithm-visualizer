@@ -9,23 +9,28 @@
     <h1> Sorting visualizer </h1>
     <div id="main">
         <!-- Array container -->
-        <div id="array-container">
-            
-        </div>
-        <!-- Algorithm selection -->
-        <select id="algorithm-select">
-            <option value="bubble">Bubble Sort</option>
-            <option value="selection">Selection Sort</option>
-            <option value="insertion">Insertion Sort</option>
-            <option value="merge">Merge Sort</option>
-            <option value="quick">Quick Sort</option>
-            <option value="heap">Heap Sort</option>
-        </select>
+        <div id="array-container"></div>
         <!-- Control buttons -->
-        <button id="start-button">Sort</button>
-        <button id="reset-button">Reset</button>
-        <button id="random-button">Random Array</button>
-        <button id="custom-button">Custom Array</button>
+        <div id="controls">
+            <!-- Algorithm selection -->
+            <select id="algorithm-select">
+                <option value="bubble">Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="insertion">Insertion Sort</option>
+                <option value="merge">Merge Sort</option>
+                <option value="quick">Quick Sort</option>
+                <option value="heap">Heap Sort</option>
+            </select>
+            <button id="start-button">Sort</button>
+            <button id="random-button">Random Array</button>
+            <div id="custom-array-wrapper">
+                <button id="custom-button">Custom Array</button>
+                <div id="custom-array-input">
+                    <input type="text" id="custom-array" placeholder="e.g. 50, 120, 80" />
+                    <button type="button" id="apply-custom-button">Apply</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="sorting.js"></script>
 </body>

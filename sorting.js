@@ -64,15 +64,32 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     document.getElementById('random-button').onclick = () => generateArray(DEFAULT_SIZE);
-    document.getElementById('reset-button').onclick = () => renderArray(array);
-    document.getElementById('custom-button').onclick = () => {
-        const input = prompt('Enter comma-separated numbers (e.g. 50,120,80):');
-        if (!input) return;
-        const values = input.split(',').map(v => parseInt(v.trim(), 10)).filter(n => !isNaN(n) && n > 0);
+
+    const customInputPanel = document.getElementById('custom-array-input');
+    const customArrayField = document.getElementById('custom-array');
+
+    function applyCustomArray() {
+        const values = customArrayField.value
+            .split(',')
+            .map(v => parseInt(v.trim(), 10))
+            .filter(n => !isNaN(n) && n > 0);
         if (values.length === 0) return;
         array = values;
         renderArray(array);
+        customInputPanel.classList.remove('visible');
+    }
+
+    document.getElementById('custom-button').onclick = () => {
+        customInputPanel.classList.toggle('visible');
+        if (customInputPanel.classList.contains('visible')) {
+            customArrayField.focus();
+        }
     };
+
+    document.getElementById('apply-custom-button').onclick = applyCustomArray;
+    customArrayField.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') applyCustomArray();
+    });
 });
 
 //bubble sort
