@@ -96,3 +96,8 @@ select {
 #apply-custom-button {
     margin: 0;
 }
+
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

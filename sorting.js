@@ -23,7 +23,7 @@ function renderArray(arr) {
     });
 }
 
-// update bar heights without recreating DOM (keeps highlights stable during sort)
+//update bar heights
 function syncBars() {
     const bars = document.getElementsByClassName('bar');
     for (let i = 0; i < array.length; i++) {
@@ -36,11 +36,22 @@ function swap(i, j) {
     syncBars();
 }
 
+//disabling the buttons while sorting
+function setControlsDisabled(disabled) {
+    document.getElementById('start-button').disabled = disabled;
+    document.getElementById('random-button').disabled = disabled;
+    document.getElementById('custom-button').disabled = disabled;
+    document.getElementById('apply-custom-button').disabled = disabled;
+    document.getElementById('algorithm-select').disabled = disabled;
+    document.getElementById('custom-array').disabled = disabled;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     generateArray(DEFAULT_SIZE);
 
     document.getElementById('start-button').onclick = async function() {
         const algorithm = document.getElementById('algorithm-select').value;
+        setControlsDisabled(true);
         switch (algorithm) {
             case 'bubble':
                 await bubbleSort(array);
@@ -63,7 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    document.getElementById('random-button').onclick = () => generateArray(DEFAULT_SIZE);
+    document.getElementById('random-button').onclick = () => {
+        location.reload();
+        generateArray(DEFAULT_SIZE);
+    }
 
     const customInputPanel = document.getElementById('custom-array-input');
     const customArrayField = document.getElementById('custom-array');
@@ -107,6 +121,7 @@ async function bubbleSort(array) {
             bars[j + 1].style.backgroundColor = 'steelblue';
         }
     }
+    setControlsDisabled(false);
 }
 
 //selection sort
@@ -132,7 +147,8 @@ async function selectionSort(array) {
         bars[minIndex].style.backgroundColor = 'steelblue';
         bars[i].style.backgroundColor = 'steelblue';
     }
-}  
+    setControlsDisabled(false);
+}
 
 //insertion sort
 async function insertionSort(array) {
@@ -155,6 +171,7 @@ async function insertionSort(array) {
         bars[j + 1].style.backgroundColor = 'steelblue';
         if (j + 1 !== i) bars[i].style.backgroundColor = 'steelblue';
     }
+    setControlsDisabled(false);
 }
 
 //quick sort
@@ -164,17 +181,43 @@ async function quickSort(array, low, high) {
         await quickSort(array, low, pi - 1);
         await quickSort(array, pi + 1, high);
     }
+    setControlsDisabled(false);
+}
+
+//MoM pivot selection
+function medianOfMedians(arr, left, right) {
+    const n = right - left + 1;
+    if (n < 5) {
+        const small = arr.slice(left, right + 1).sort((a, b) => a - b);
+        return small[Math.floor(small.length / 2)];
+    }
+    let medians = [];
+    for (let i = left; i <= right; i += 5) {
+        const subRight = Math.min(i + 4, right);
+        const group = arr.slice(i, subRight + 1).sort((a, b) => a - b);
+        medians.push(group[Math.floor(group.length / 2)]);
+    }
+    return medianOfMedians(medians, 0, medians.length - 1);
 }
 
 async function partition(array, low, high) {
     const bars = document.getElementsByClassName('bar');
-    let pivot = array[high];
-    bars[high].style.backgroundColor = 'red';
+    const pivotValue = medianOfMedians(array, low, high);
+    let pivotIndex = -1;
+    for (let i = low; i <= high; i++) {
+        if (array[i] === pivotValue) {
+            pivotIndex = i;
+            break;
+        }
+    }
+    swap(pivotIndex, high);
+
+    bars[high].style.backgroundColor = 'yellow';
     let i = low - 1;
     for (let j = low; j < high; j++) {
-        bars[j].style.backgroundColor = 'yellow';
+        bars[j].style.backgroundColor = 'red';
         await new Promise(resolve => setTimeout(resolve, DELAY_MS));
-        if (array[j] < pivot) {
+        if (array[j] < pivotValue) {
             i++;
             swap(i, j);
         }
@@ -194,6 +237,7 @@ async function mergeSort(array, left, right) {
         await mergeSort(array, mid + 1, right);
         await merge(array, left, mid, right);
     }
+    setControlsDisabled(false);
 }
 
 async function merge(array, left, mid, right) {
@@ -202,7 +246,7 @@ async function merge(array, left, mid, right) {
     const rightArray = array.slice(mid + 1, right + 1);
     let i = 0, j = 0, k = left;
     while (i < leftArray.length && j < rightArray.length) {
-        bars[k].style.backgroundColor = 'yellow';
+        bars[k].style.backgroundColor = 'red';
         await new Promise(resolve => setTimeout(resolve, DELAY_MS));
         if (leftArray[i] <= rightArray[j]) {
             array[k] = leftArray[i];
@@ -216,7 +260,7 @@ async function merge(array, left, mid, right) {
         k++;
     }
     while (i < leftArray.length) {
-        bars[k].style.backgroundColor = 'yellow';
+        bars[k].style.backgroundColor = 'red';
         await new Promise(resolve => setTimeout(resolve, DELAY_MS));
         array[k] = leftArray[i];
         syncBars();
@@ -225,7 +269,7 @@ async function merge(array, left, mid, right) {
         k++;
     }
     while (j < rightArray.length) {
-        bars[k].style.backgroundColor = 'yellow';
+        bars[k].style.backgroundColor = 'red';
         await new Promise(resolve => setTimeout(resolve, DELAY_MS));
         array[k] = rightArray[j];
         syncBars();
@@ -245,6 +289,7 @@ async function heapSort(array) {
         swap(0, i);
         await heapify(array, i, 0);
     }
+    setControlsDisabled(false);
 }
 
 async function heapify(array, n, i) {
