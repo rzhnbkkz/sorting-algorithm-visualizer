@@ -1,6 +1,7 @@
 # Sorting Algorithm Visualizer
 
-A web-based visualization of sorting algorithms
+Visualization of sorting algorithms
+https://rzhnbkkz.github.io/sorting-algorithm-visualizer/
 
 ## Features
 - Bubble sort
