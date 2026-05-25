@@ -17,6 +17,3 @@ https://rzhnbkkz.github.io/sorting-algorithm-visualizer/
 - HTML
 - CSS
 - JavaScript
-
-## How to run
-Open `index.html` in a browser
